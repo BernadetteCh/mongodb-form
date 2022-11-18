@@ -5,3 +5,8 @@
 .submitButton {
   display: block;
 }
+.user-table {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
