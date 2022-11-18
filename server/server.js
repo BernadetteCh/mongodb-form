@@ -22,5 +22,16 @@ app.post("/userData", async (req, response) => {
   });
 });
 
+app.get("/data", (req, res) => {
+  db.collection("users")
+    .find()
+    .toArray()
+    .then((result) => {
+      res.send(result);
+    });
+});
+
+app.delete("/data/:id", (req, res) => {});
+
 app.listen(port);
 console.log("http://localhost:" + port);
