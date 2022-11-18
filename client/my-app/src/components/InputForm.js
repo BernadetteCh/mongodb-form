@@ -3,7 +3,7 @@ import "../App.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-function InputForm() {
+function InputForm({ renderPage }) {
   const [user, setUser] = useState({
     firstName: "",
     secondName: "",
@@ -15,6 +15,10 @@ function InputForm() {
   //   setUser({ firstName: input.value });
   //   console.log(user.firstName);
   // }
+
+  function changePage() {
+    renderPage(true);
+  }
   function saveInput(e) {
     const value = e.target.value;
     setUser({ ...user, [e.target.name]: value });
@@ -87,6 +91,7 @@ function InputForm() {
           Submit
         </Button>
       </Form>
+      <Button onClick={changePage}>Edit</Button>
     </div>
   );
 }
