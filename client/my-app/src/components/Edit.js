@@ -21,14 +21,17 @@ function Edit({ renderPage }) {
     renderPage(false);
   };
 
-  const deleteRequest = async (id) => {
-    console.log(id);
+  const deleteRequest = async (id, index) => {
     await fetch(`http://localhost:8000/data/${id}`, {
       method: "DELETE",
       headers: {
         "Content-type": "application/json",
       },
     });
+
+    let newData = [...data];
+    newData.splice(index, 1);
+    setData(newData);
   };
 
   return (
@@ -52,7 +55,6 @@ function Edit({ renderPage }) {
           );
         })}
       </table>
-
       <Button onClick={changePage} className="mt-5">
         Go Back To Form
       </Button>
