@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+//CORS ist ein von Browsern implementiertes Sicherheitsprotokoll, das uns den Zugriff auf Ressourcen anderer Herkunft ermöglicht.
 const cors = require("cors");
 const port = 8000;
 const mongoose = require("mongoose");
@@ -7,6 +8,7 @@ const db = mongoose.connection;
 mongoose.connect("mongodb://localhost/newsLetterUsers");
 const User = require("./UserSchema");
 
+//It parses incoming JSON requests and puts the parsed data in req.body. + urlencoded sind helpful express middleware parser functions
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -34,7 +36,6 @@ app.get("/data", (req, res) => {
 });
 
 app.delete("/data/:id", async (req, res) => {
-  console.log(req.params.id);
   await User.findByIdAndDelete(req.params.id);
 });
 
