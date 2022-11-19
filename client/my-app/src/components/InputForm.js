@@ -9,12 +9,6 @@ function InputForm({ renderPage }) {
     secondName: "",
     email: "",
   });
-  // function handleInput(e) {
-  //   console.log(e.target.name);
-  //   const input = e.target.name;
-  //   setUser({ firstName: input.value });
-  //   console.log(user.firstName);
-  // }
 
   function changePage() {
     renderPage(true);
@@ -25,7 +19,6 @@ function InputForm({ renderPage }) {
   }
 
   async function handleSubmit(e) {
-    e.preventDefault();
     let response = await fetch("http://localhost:8000/userData", {
       method: "POST",
       headers: {
@@ -39,9 +32,13 @@ function InputForm({ renderPage }) {
     if (!response.ok) {
       console.log(`Error: ${response.status}`);
     }
-    let datajson = await response.json();
-    console.log(datajson);
+    setUser({
+      firstName: "",
+      secondName: "",
+      email: "",
+    });
   }
+
   return (
     <div className="form">
       <h1>Exercise MongoDB, Express & React</h1>{" "}
