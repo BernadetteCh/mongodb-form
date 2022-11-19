@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 
 function User({ user, myKey, deleteRequest }) {
   const deleteUser = (e) => {
-    deleteRequest(user._id);
+    deleteRequest(user._id, myKey);
   };
 
   return (
@@ -12,9 +12,11 @@ function User({ user, myKey, deleteRequest }) {
         <td>{user.firstName}</td>
         <td>{user.secondName}</td>
         <td>{user.email}</td>
-        <Button variant="secondary" onClick={deleteUser} type="submit">
-          DELETE
-        </Button>
+        <td>
+          <Button variant="secondary" onClick={deleteUser} type="submit">
+            DELETE
+          </Button>
+        </td>
       </tr>
     </tbody>
   );
