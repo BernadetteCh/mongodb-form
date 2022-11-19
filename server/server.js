@@ -33,7 +33,10 @@ app.get("/data", (req, res) => {
     });
 });
 
-app.delete("/data/:id", (req, res) => {});
+app.delete("/data/:id", async (req, res) => {
+  console.log(req.params.id);
+  await User.findByIdAndDelete(req.params.id);
+});
 
 app.listen(port);
 console.log("http://localhost:" + port);

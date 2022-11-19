@@ -12,7 +12,7 @@ function User({ user, myKey, deleteRequest }) {
         <td>{user.firstName}</td>
         <td>{user.secondName}</td>
         <td>{user.email}</td>
-        <Button variant="secondary" onClick={deleteUser}>
+        <Button variant="secondary" onClick={deleteUser} type="submit">
           DELETE
         </Button>
       </tr>
