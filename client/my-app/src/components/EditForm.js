@@ -1,57 +1,68 @@
-import React, { useState } from "react";
-import "../App.css";
+import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-function InputForm({ renderPage, renderEditPage }) {
-  const [user, setUser] = useState({
+function EditForm({ userid }) {
+  const [apiUrl] = useState("");
+  const [form, setForm] = useState({
     firstName: "",
     secondName: "",
     email: "",
   });
 
-  function changePage() {
-    renderPage(true);
-  }
+  useEffect(() => {
+    async function fetchData() {
+      //   const id = userid.toString();
 
-  function saveInput(e) {
-    const value = e.target.value;
-    setUser({ ...user, [e.target.name]: value });
-  }
+      const response = await fetch(`http://localhost:8000/data/${userid}`);
+      const data = await response.json();
 
-  async function handleSubmit(e) {
-    let response = await fetch("http://localhost:8000/userData", {
+      if (!response.ok) {
+        console.log(`Error: ${response.status}`);
+      }
+      setForm(data);
+    }
+
+    fetchData();
+  }, [apiUrl, userid]);
+
+  const updateForm = (e) => {
+    return setForm((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  };
+  // console.log(form);
+  // console.log(userid);
+
+  async function sayHello(e) {
+    let response = await fetch(`http://localhost:8000/data/${userid}`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
       },
       body: JSON.stringify({
-        user,
+        firstName: form.firstName,
+        secondName: form.secondName,
+        email: form.email,
       }),
     });
 
     if (!response.ok) {
       console.log(`Error: ${response.status}`);
     }
-    setUser({
-      firstName: "",
-      secondName: "",
-      email: "",
-    });
   }
 
   return (
     <div className="form">
-      <h1>Exercise MongoDB, Express & React</h1>{" "}
       <Form>
         <Form.Group className="mb-3 firstName">
           <Form.Label>FirstName</Form.Label>
           <Form.Control
             type="text"
-            value={user.firstName}
+            value={form.firstName}
             name="firstName"
             placeholder="Please Enter your FirstName"
-            onChange={saveInput}
+            onChange={updateForm}
           />
         </Form.Group>
 
@@ -60,9 +71,9 @@ function InputForm({ renderPage, renderEditPage }) {
           <Form.Control
             type="text"
             name="secondName"
-            value={user.secondName}
+            value={form.secondName}
             placeholder="Please Enter your SecondName"
-            onChange={saveInput}
+            onChange={updateForm}
           />
         </Form.Group>
 
@@ -71,27 +82,21 @@ function InputForm({ renderPage, renderEditPage }) {
           <Form.Control
             type="email"
             name="email"
-            value={user.email}
+            value={form.email}
             placeholder="Please Enter your email"
-            onChange={saveInput}
+            onChange={updateForm}
           />
         </Form.Group>
 
         <Form.Text className="text-muted">
           We'll never share your data with anyone else.
         </Form.Text>
-        <Button
-          variant="primary"
-          type="submit"
-          className="submitButton d-block"
-          onClick={handleSubmit}
-        >
-          Submit
+        <Button onClick={sayHello} type="submit">
+          Edit
         </Button>
       </Form>
-      <Button onClick={changePage}>Edit</Button>
     </div>
   );
 }
 
-export default InputForm;
+export default EditForm;

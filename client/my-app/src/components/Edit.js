@@ -20,7 +20,9 @@ function Edit({ renderPage }) {
   const changePage = () => {
     renderPage(false);
   };
-
+  const goToEditPage = (id, userId) => {
+    renderPage(id, userId);
+  };
   const deleteRequest = async (id, index) => {
     await fetch(`http://localhost:8000/data/${id}`, {
       method: "DELETE",
@@ -51,6 +53,7 @@ function Edit({ renderPage }) {
               key={index}
               myKey={index}
               deleteRequest={deleteRequest}
+              goToEditPage={goToEditPage}
             />
           );
         })}

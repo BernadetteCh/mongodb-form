@@ -20,13 +20,13 @@ app.post("/userData", async (req, response) => {
     email: req.body.user.email,
   });
   try {
-    newsLetterUser = await newsLetterUser.save();
+    await newsLetterUser.save();
   } catch (e) {
     console.log(e);
   }
 });
 
-app.get("/data", (req, res) => {
+app.get("/data", async (req, res) => {
   db.collection("users")
     .find()
     .toArray()
@@ -35,8 +35,34 @@ app.get("/data", (req, res) => {
     });
 });
 
+app.post("/data/:userid", async (req, res) => {
+  // const update = {
+  //   firstName: req.body.firstName,
+  //   secondName: req.body.secondName,
+  //   email: req.body.email,
+  // };
+  // await User.updateOne({ _id: req.params.userid }, req.body, (err, res) => {
+  //   console.log(res);
+  // }); //ALIREZA FRAGEN !!
+  await User.updateOne(
+    { _id: req.params.userid },
+    {
+      $set: {
+        firstName: req.body.firstName,
+        secondName: req.body.secondName,
+        email: req.body.email,
+      },
+    }
+  ).lean();
+});
 app.delete("/data/:id", async (req, res) => {
   await User.findByIdAndDelete(req.params.id);
+});
+
+app.get("/data/:id", async (req, res) => {
+  await User.findById(req.params.id).then((result) => {
+    res.send(result);
+  });
 });
 
 app.listen(port);
