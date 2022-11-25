@@ -1,12 +1,28 @@
 const express = require("express");
 const app = express();
+//import libary for process.env.mongourl npm install dotenv
+require("dotenv").config();
 //CORS ist ein von Browsern implementiertes Sicherheitsprotokoll, das uns den Zugriff auf Ressourcen anderer Herkunft ermöglicht.
 const cors = require("cors");
 const port = 8000;
 const mongoose = require("mongoose");
 const db = mongoose.connection;
-mongoose.connect("mongodb://localhost/newsLetterUsers");
+//we need libary stuff from node js to read the env file// we read the variable
+
 const User = require("./UserSchema");
+
+const main = () => {
+  //here we could check
+  //anything than 0 means that there is an error
+  if (!process.env.MONGOURL) {
+    console.error("Error no MONGURL");
+    process.exit(1);
+  } else {
+    console.log(process.env.MONGOURL);
+    mongoose.connect(process.env.MONGOURL);
+  }
+};
+main();
 
 //It parses incoming JSON requests and puts the parsed data in req.body. + urlencoded sind helpful express middleware parser functions
 app.use(express.json());
